@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>synzoia — Activity Feed Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg:        #f8f1e7;
+  --bg-alt:    #efe7d8;
+  --surface:   #fdfaf6;
+  --surface-2: #f3ece1;
+  --primary:   #1a9b8f;
+  --primary-dk:#157a70;
+  --primary-lt:#d6f4f1;
+  --green:     #2d6a4f;
+  --green-lt:  #daeee5;
+  --amber:     #c68642;
+  --amber-lt:  #f5e8d3;
+  --red:       #d4524a;
+  --text:      #1a2620;
+  --text-2:    #4a5e56;
+  --muted:     #7a8f84;
+  --border:    #d4c9b6;
+  --border-lt: #e8e0d2;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── LAYOUT ─────────────────────────────────────────────────────────── */
+.app-shell {
+  display: grid;
+  grid-template-columns: 240px 1fr 300px;
+  grid-template-rows: 64px 1fr;
+  min-height: 100vh;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ── TOPBAR ─────────────────────────────────────────────────────────── */
+.topbar {
+  grid-column: 1 / -1;
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-lt);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 24px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+}
+.logo span { color: var(--primary); }
+.search-bar {
+  flex: 1;
+  max-width: 400px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.search-bar input {
+  border: none;
+  background: none;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+  width: 100%;
+}
+.search-bar input::placeholder { color: var(--muted); }
+.topbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.topbar-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  position: relative;
+  transition: background 0.15s;
+}
+.topbar-icon:hover { background: var(--primary-lt); }
+.notif-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red);
+  border: 1.5px solid var(--bg);
+}
+.topbar-av {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  cursor: pointer;
+  object-fit: cover;
+}
+
+/* ── SIDEBAR LEFT ───────────────────────────────────────────────────── */
+.sidebar-left {
+  padding: 24px 16px;
+  border-right: 1px solid var(--border-lt);
+  background: var(--surface);
+  position: sticky;
+  top: 64px;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.sidebar-left::-webkit-scrollbar { display: none; }
+.nav-section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0 12px;
+  margin-bottom: 8px;
+  margin-top: 24px;
+}
+.nav-section-label:first-child { margin-top: 0; }
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text-2);
+  font-size: 14px;
+  font-weight: 400;
+  transition: background 0.15s, color 0.15s;
+  margin-bottom: 2px;
+}
+.nav-item:hover { background: var(--surface-2); color: var(--text); }
+.nav-item.active { background: var(--primary-lt); color: var(--primary); font-weight: 600; }
+.nav-item-icon { font-size: 16px; width: 20px; text-align: center; }
+.nav-badge {
+  margin-left: auto;
+  background: var(--primary);
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 99px;
+}
+
+.mini-leaderboard {
+  margin-top: 8px;
+  background: var(--surface-2);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border-lt);
+}
+.mini-lb-head {
+  padding: 12px 14px;
+  background: var(--primary);
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: white;
+}
+.mini-lb-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border-lt);
+  font-size: 12px;
+}
+.mini-lb-row:last-child { border-bottom: none; }
+.mini-lb-n {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  width: 16px;
+}
+.mini-lb-n.gold { color: #c68642; }
+.mini-lb-n.silver { color: #9ba8b0; }
+.mini-lb-n.bronze { color: #b87040; }
+.mini-lb-name { flex: 1; font-weight: 500; color: var(--text); }
+.mini-lb-val {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+/* ── MAIN FEED ──────────────────────────────────────────────────────── */
+.feed-main {
+  padding: 24px 28px;
+  max-width: 640px;
+  width: 100%;
+  margin: 0 auto;
+}
+.feed-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.filter-pill {
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+}
+.filter-pill:hover { border-color: var(--primary); color: var(--primary); }
+.filter-pill.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+/* ── POST CARD ──────────────────────────────────────────────────────── */
+.post-card {
+  background: var(--surface);
+  border: 1px solid var(--border-lt);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  transition: box-shadow 0.2s;
+}
+.post-card:hover {
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--text) 8%, transparent);
+}
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px 12px;
+}
+.post-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-lt);
+  flex-shrink: 0;
+}
+.post-user-info { flex: 1; }
+.post-username { font-weight: 600; font-size: 14px; color: var(--text); }
+.post-meta {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.post-more {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+}
+
+/* post metrics strip */
+.metrics-strip {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid var(--border-lt);
+  border-bottom: 1px solid var(--border-lt);
+  background: var(--surface-2);
+}
+.metric-cell {
+  flex: 1;
+  padding: 10px 14px;
+  border-right: 1px solid var(--border-lt);
+  text-align: center;
+}
+.metric-cell:last-child { border-right: none; }
+.metric-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--text);
+}
+.metric-val.teal  { color: var(--primary); }
+.metric-val.green { color: var(--green); }
+.metric-val.amber { color: var(--amber); }
+.metric-val.red   { color: var(--red); }
+.metric-lbl {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+/* post body */
+.post-body { padding: 14px 20px 0; }
+.post-caption {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.65;
+  font-weight: 300;
+}
+.post-caption strong { font-weight: 600; color: var(--text); }
+.post-tag {
+  display: inline-block;
+  background: var(--primary-lt);
+  color: var(--primary);
+  padding: 2px 10px;
+  border-radius: 99px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+
+/* food photo grid */
+.food-grid {
+  padding: 12px 20px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.food-img {
+  border-radius: 10px;
+  object-fit: cover;
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+.food-img:hover { transform: scale(1.02); }
+.food-img.large  { width: 100%; height: 220px; }
+.food-img.medium { width: calc(50% - 4px); height: 140px; }
+.food-img.small  { width: calc(33% - 5px); height: 110px; }
+
+/* post actions */
+.post-actions {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 10px 16px 8px;
+  border-top: 1px solid var(--border-lt);
+}
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  border: none;
+  background: none;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.action-btn:hover { background: var(--surface-2); color: var(--text); }
+.action-btn.liked { color: var(--red); }
+.action-btn span { font-family: 'Space Mono', monospace; font-size: 10px; }
+.action-btn-sep { margin: 0 2px; width: 1px; height: 20px; background: var(--border-lt); }
+.action-dm {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all 0.15s;
+  background: none;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.action-dm:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-lt); }
+
+/* comments */
+.comments-section {
+  padding: 0 20px 16px;
+  border-top: 1px solid var(--border-lt);
+}
+.comments-header {
+  padding: 10px 0 12px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.comment {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.comment-av {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.comment-bubble {
+  background: var(--surface-2);
+  border-radius: 0 12px 12px 12px;
+  padding: 8px 12px;
+  flex: 1;
+}
+.comment-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.comment-text { font-size: 13px; color: var(--text-2); line-height: 1.5; font-weight: 300; }
+.comment-time { font-family: 'Space Mono', monospace; font-size: 8px; color: var(--muted); margin-top: 4px; }
+.comment-like { font-size: 11px; color: var(--muted); margin-top: 4px; cursor: pointer; }
+.comment-input-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 8px;
+}
+.comment-input-av {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.comment-input {
+  flex: 1;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 7px 16px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+}
+.comment-input::placeholder { color: var(--muted); }
+.comment-input:focus { border-color: var(--primary); }
+
+/* ── SIDEBAR RIGHT ──────────────────────────────────────────────────── */
+.sidebar-right {
+  padding: 24px 16px;
+  border-left: 1px solid var(--border-lt);
+  background: var(--surface);
+  position: sticky;
+  top: 64px;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.sidebar-right::-webkit-scrollbar { display: none; }
+.widget {
+  background: var(--surface-2);
+  border: 1px solid var(--border-lt);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.widget-head {
+  padding: 12px 16px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--border-lt);
+  font-weight: 700;
+}
+.widget-body { padding: 12px 16px; }
+
+/* trending tags */
+.tag-list { display: flex; flex-direction: column; gap: 8px; }
+.tag-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+}
+.tag-name { color: var(--primary); font-weight: 500; }
+.tag-count { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); }
+
+/* suggested users */
+.suggested-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.sug-av { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.sug-info { flex: 1; min-width: 0; }
+.sug-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.sug-handle { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); }
+.follow-pill {
+  padding: 5px 12px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: none;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.follow-pill:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+/* weather widget */
+.weather-widget {
+  background: linear-gradient(135deg, var(--primary), var(--green));
+  border-radius: 14px;
+  padding: 16px;
+  color: white;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.weather-widget::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 100px;
+  height: 100px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50%;
+}
+.weather-loc { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.7; margin-bottom: 8px; }
+.weather-temp { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 300; line-height: 1; }
+.weather-cond { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+.weather-ideal { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.2); font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; opacity: 0.8; }
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <a href="landing.html" class="logo">syn<span>z</span>oia</a>
+    <div class="search-bar">
+      <span>🔍</span>
+      <input type="text" placeholder="Search people, meals, activities…" />
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-icon">
+        🔔
+        <div class="notif-dot"></div>
+      </div>
+      <div class="topbar-icon">💬</div>
+      <img src="https://picsum.photos/seed/me/72/72" class="topbar-av" alt="You" />
+    </div>
+  </header>
+
+  <!-- SIDEBAR LEFT -->
+  <aside class="sidebar-left">
+    <div class="nav-section-label">Navigate</div>
+    <a href="feed.html" class="nav-item active"><span class="nav-item-icon">🏠</span> Feed <span class="nav-badge">12</span></a>
+    <a href="#" class="nav-item"><span class="nav-item-icon">🏆</span> Leaderboard</a>
+    <a href="profile.html" class="nav-item"><span class="nav-item-icon">👤</span> My Profile</a>
+    <a href="messages.html" class="nav-item"><span class="nav-item-icon">💬</span> Messages <span class="nav-badge">3</span></a>
+    <a href="#" class="nav-item"><span class="nav-item-icon">🔍</span> Explore</a>
+    <a href="#" class="nav-item"><span class="nav-item-icon">⚙️</span> Settings</a>
+
+    <div class="nav-section-label">Today's Board</div>
+    <div class="mini-leaderboard">
+      <div class="mini-lb-head">📊 Daily Steps</div>
+      <div class="mini-lb-row">
+        <div class="mini-lb-n gold">1</div>
+        <img src="https://picsum.photos/seed/lb1/40/40" style="width:24px;height:24px;border-radius:50%;object-fit:cover;" alt="" />
+        <div class="mini-lb-name">sierra_w</div>
+        <div class="mini-lb-val">18,204</div>
+      </div>
+      <div class="mini-lb-row">
+        <div class="mini-lb-n silver">2</div>
+        <img src="https://picsum.photos/seed/lb2/40/40" style="width:24px;height:24px;border-radius:50%;object-fit:cover;" alt="" />
+        <div class="mini-lb-name">r_rob</div>
+        <div class="mini-lb-val">14,880</div>
+      </div>
+      <div class="mini-lb-row">
+        <div class="mini-lb-n bronze">3</div>
+        <img src="https://picsum.photos/seed/lb3/40/40" style="width:24px;height:24px;border-radius:50%;object-fit:cover;" alt="" />
+        <div class="mini-lb-name">marina_s</div>
+        <div class="mini-lb-val">13,501</div>
+      </div>
+      <div class="mini-lb-row" style="background:var(--primary-lt)">
+        <div class="mini-lb-n" style="color:var(--primary)">7</div>
+        <img src="https://picsum.photos/seed/me/40/40" style="width:24px;height:24px;border-radius:50%;object-fit:cover;" alt="" />
+        <div class="mini-lb-name" style="color:var(--primary)">you</div>
+        <div class="mini-lb-val" style="color:var(--primary)">9,240</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN FEED -->
+  <main class="feed-main">
+    <div class="feed-filters">
+      <button class="filter-pill active">All</button>
+      <button class="filter-pill">Steps</button>
+      <button class="filter-pill">Sleep</button>
+      <button class="filter-pill">Meals</button>
+      <button class="filter-pill">Heart Rate</button>
+    </div>
+
+    <!-- POST 1: Full health post with trail photo -->
+    <div class="post-card">
+      <div class="post-header">
+        <img src="https://picsum.photos/seed/av1/84/84" class="post-avatar" alt="sierra" />
+        <div class="post-user-info">
+          <div class="post-username">sierra_walker</div>
+          <div class="post-meta">Santa Cruz, CA · 7 min ago · 🌲 Morning hike</div>
+        </div>
+        <div class="post-more">···</div>
+      </div>
+
+      <div class="metrics-strip">
+        <div class="metric-cell">
+          <div class="metric-val teal">11,204</div>
+          <div class="metric-lbl">Steps</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-val green">8h 12m</div>
+          <div class="metric-lbl">Sleep</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-val red">61 bpm</div>
+          <div class="metric-lbl">Resting HR</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-val amber">1,924</div>
+          <div class="metric-lbl">Calories</div>
+        </div>
+      </div>
+
+      <div class="post-body">
+        <p class="post-caption">
+          <strong>Best fog this week.</strong> Drove up to Henry Cowell at 6am, caught the light just after it burned off the canopy. Did the full redwood loop twice — legs are done but HR was incredible throughout.
+        </p>
+        <span class="post-tag">🌲 Redwood Loop · 4.2mi</span>
+      </div>
+
+      <div class="food-grid">
+        <img src="https://picsum.photos/seed/trail1/800/400" class="food-img large" alt="trail" />
+      </div>
+
+      <div class="post-actions">
+        <button class="action-btn liked">❤️ <span>24</span></button>
+        <div class="action-btn-sep"></div>
+        <button class="action-btn">💬 <span>6</span></button>
+        <div class="action-btn-sep"></div>
+        <button class="action-btn">↗️ <span>Share</span></button>
+        <button class="action-dm">✉️ DM</button>
+      </div>
+
+      <div class="comments-section">
+        <div class="comments-header">6 Comments</div>
+        <div class="comment">
+          <img src="https://picsum.photos/seed/av5/60/60" class="comment-av" alt="" />
+          <div class="comment-bubble">
+            <div class="comment-name">redwood_rob</div>
+            <div class="comment-text">That HR data is insane for a hike that elevation gain. What's your weekly avg now?</div>
+            <div class="comment-time">5 min ago</div>
+            <div class="comment-like">❤️ 3 · Reply</div>
+          </div>
+        </div>
+        <div class="comment">
+          <img src="https://picsum.photos/seed/av7/60/60" class="comment-av" alt="" />
+          <div class="comment-bubble">
+            <div class="comment-name">marina_steps</div>
+            <div class="comment-text">I need to do this trail! Was the upper loop open? Heard it was closed last week 🌲</div>
+            <div class="comment-time">3 min ago</div>
+            <div class="comment-like">❤️ 1 · Reply</div>
+          </div>
+        </div>
+        <div class="comment-input-row">
+          <img src="https://picsum.photos/seed/me/60/60" class="comment-input-av" alt="" />
+          <input class="comment-input" placeholder="Add a comment…" />
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 2: Meal post -->
+    <div class="post-card">
+      <div class="post-header">
+        <img src="https://picsum.photos/seed/av3/84/84" class="post-avatar" alt="cali_ash" />
+        <div class="post-user-info">
+          <div class="post-username">cali_ash</div>
+          <div class="post-meta">Santa Cruz, CA · 34 min ago · 🍳 Breakfast</div>
+        </div>
+        <div class="post-more">···</div>
+      </div>
+
+      <div class="metrics-strip">
+        <div class="metric-cell">
+          <div class="metric-val amber">640</div>
+          <div class="metric-lbl">Meal cal</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-val green">7h 48m</div>
+          <div class="metric-lbl">Sleep</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-val teal">8,240</div>
+          <div class="metric-lbl">Steps so far</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-val red">58 bpm</div>
+          <div class="metric-lbl">HR</div>
+        </div>
+      </div>
+
+      <div class="food-grid">
+        <img src="https://picsum.photos/seed/food1/600/300" class="food-img medium" alt="food" />
+        <img src="https://picsum.photos/seed/food2/600/300" class="food-img medium" alt="food" />
+      </div>
+
+      <div class="post-body" style="padding-bottom:14px">
+        <p class="post-caption">
+          Avocado toast + poached eggs + smoked salmon. Local sourdough from Companion Bakeshop. <strong>Started the day right.</strong> Sleep score was 91 last night — feeling like I can run a marathon.
+        </p>
+        <span class="post-tag" style="background:var(--amber-lt);color:var(--amber)">🥑 42g protein</span>
+        <span class="post-tag" style="margin-left:6px">🥚 Companion Bakeshop</span>
+      </div>
+
+      <div class="post-actions">
+        <button class="action-btn">❤️ <span>18</span></button>
+        <div class="action-btn-sep"></div>
+        <button class="action-btn">💬 <span>4</span></button>
+        <div class="action-btn-sep"></div>
+        <button class="action-btn">↗️ <span>Share</span></button>
+        <button class="action-dm">✉️ DM</button>
+      </div>
+
+      <div class="comments-section">
+        <div class="comments-header">4 Comments</div>
+        <div class="comment">
+          <img src="https://picsum.photos/seed/av8/60/60" class="comment-av" alt="" />
+          <div class="comment-bubble">
+            <div class="comment-name">pacific_palo</div>
+            <div class="comment-text">Recipe for the salmon spread?? Asking for myself every morning 🙏</div>
+            <div class="comment-time">28 min ago</div>
+            <div class="comment-like">❤️ 5 · Reply</div>
+          </div>
+        </div>
+        <div class="comment-input-row">
+          <img src="https://picsum.photos/seed/me/60/60" class="comment-input-av" alt="" />
+          <input class="comment-input" placeholder="Add a comment…" />
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 3: Sleep post -->
+    <div class="post-card">
+      <div class="post-header">
+        <img src="https://picsum.photos/seed/av6/84/84" class="post-avatar" alt="redwood_rob" />
+        <div class="post-user-info">
+          <div class="post-username">redwood_rob</div>
+          <div class="post-meta">1 hr ago · 😴 Night summary</div>
+        </div>
+        <div class="post-more">···</div>
+      </div>
+
+      <div class="metrics-strip">
+        <div class="metric-cell">
+          <div class="metric-val green">8h 34m</div>
+          <div class="metric-lbl">Total sleep</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-val teal">2h 04m</div>
+          <div class="metric-lbl">Deep sleep</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-val amber">1h 48m</div>
+          <div class="metric-lbl">REM</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-val" style="color:var(--primary)">94</div>
+          <div class="metric-lbl">Sleep score</div>
+        </div>
+      </div>
+
+      <div class="post-body">
+        <p class="post-caption">
+          Best sleep I've had in two months. No phone after 9pm rule is doing something. HRV this morning was <strong>88ms</strong> — that's a personal best.
+        </p>
+      </div>
+
+      <!-- Sleep bar visual -->
+      <div style="padding:14px 20px;">
+        <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Sleep stages · 9:42pm → 6:16am</div>
+        <div style="height:28px;border-radius:8px;overflow:hidden;display:flex;gap:2px;">
+          <div style="flex:0.15;background:var(--green);border-radius:4px;opacity:0.4"></div>
+          <div style="flex:0.25;background:var(--primary);border-radius:4px;opacity:0.8"></div>
+          <div style="flex:0.2;background:var(--green);border-radius:4px;opacity:0.6"></div>
+          <div style="flex:0.1;background:#a0c0cc;border-radius:4px;opacity:0.4"></div>
+          <div style="flex:0.2;background:var(--primary);border-radius:4px;opacity:0.9"></div>
+          <div style="flex:0.1;background:var(--amber);border-radius:4px;opacity:0.6"></div>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:8px;">
+          <div style="display:flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);">
+            <div style="width:8px;height:8px;background:var(--primary);border-radius:2px"></div> Deep
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);">
+            <div style="width:8px;height:8px;background:var(--green);border-radius:2px"></div> Light
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);">
+            <div style="width:8px;height:8px;background:var(--amber);border-radius:2px"></div> REM
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);">
+            <div style="width:8px;height:8px;background:#a0c0cc;border-radius:2px"></div> Awake
+          </div>
+        </div>
+      </div>
+
+      <div class="post-actions">
+        <button class="action-btn">❤️ <span>31</span></button>
+        <div class="action-btn-sep"></div>
+        <button class="action-btn">💬 <span>9</span></button>
+        <button class="action-dm">✉️ DM</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- SIDEBAR RIGHT -->
+  <aside class="sidebar-right">
+    <!-- Weather -->
+    <div class="weather-widget">
+      <div class="weather-loc">📍 Santa Cruz, CA</div>
+      <div class="weather-temp">63°</div>
+      <div class="weather-cond">Morning fog clearing · Partly cloudy</div>
+      <div class="weather-ideal">🌲 Perfect trail conditions today</div>
+    </div>
+
+    <!-- Suggested to follow -->
+    <div class="widget">
+      <div class="widget-head">Suggested to follow</div>
+      <div class="widget-body">
+        <div class="suggested-user">
+          <img src="https://picsum.photos/seed/sug1/76/76" class="sug-av" alt="" />
+          <div class="sug-info">
+            <div class="sug-name">cowell_park</div>
+            <div class="sug-handle">10,200 avg steps/day</div>
+          </div>
+          <button class="follow-pill">Follow</button>
+        </div>
+        <div class="suggested-user">
+          <img src="https://picsum.photos/seed/sug2/76/76" class="sug-av" alt="" />
+          <div class="sug-info">
+            <div class="sug-name">pacific_dawn</div>
+            <div class="sug-handle">Sleep score: 88 avg</div>
+          </div>
+          <button class="follow-pill">Follow</button>
+        </div>
+        <div class="suggested-user">
+          <img src="https://picsum.photos/seed/sug3/76/76" class="sug-av" alt="" />
+          <div class="sug-info">
+            <div class="sug-name">kelp_runner</div>
+            <div class="sug-handle">42-day streak 🔥</div>
+          </div>
+          <button class="follow-pill">Follow</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trending tags -->
+    <div class="widget">
+      <div class="widget-head">Trending today</div>
+      <div class="widget-body">
+        <div class="tag-list">
+          <div class="tag-row"><span class="tag-name">#HenryCowellHike</span><span class="tag-count">48 posts</span></div>
+          <div class="tag-row"><span class="tag-name">#MorningFog</span><span class="tag-count">31 posts</span></div>
+          <div class="tag-row"><span class="tag-name">#SleepStreak</span><span class="tag-count">27 posts</span></div>
+          <div class="tag-row"><span class="tag-name">#RedwoodRun</span><span class="tag-count">19 posts</span></div>
+          <div class="tag-row"><span class="tag-name">#BreakfastGoals</span><span class="tag-count">14 posts</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.08em;color:var(--muted);line-height:1.8;padding:0 4px;">
+      © 2026 synzoia · Privacy · Terms<br/>No algorithm. No ads. Public by default.
+    </div>
+  </aside>
+</div>
+
+</body>
+</html>

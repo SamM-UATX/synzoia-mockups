@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>synzoia — Profile Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg:        #f8f1e7;
+  --bg-alt:    #efe7d8;
+  --surface:   #fdfaf6;
+  --surface-2: #f3ece1;
+  --primary:   #1a9b8f;
+  --primary-lt:#d6f4f1;
+  --primary-dk:#157a70;
+  --green:     #2d6a4f;
+  --green-lt:  #daeee5;
+  --amber:     #c68642;
+  --amber-lt:  #f5e8d3;
+  --red:       #d4524a;
+  --red-lt:    #fae0de;
+  --text:      #1a2620;
+  --text-2:    #4a5e56;
+  --muted:     #7a8f84;
+  --border:    #d4c9b6;
+  --border-lt: #e8e0d2;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); }
+
+/* NAV */
+nav {
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-lt);
+  position: sticky; top: 0; z-index: 50;
+}
+.nav-inner {
+  max-width: 1100px; margin: 0 auto; padding: 0 32px;
+  height: 64px; display: flex; align-items: center; justify-content: space-between;
+}
+.logo { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 24px; font-weight: 500; color: var(--text); text-decoration: none; }
+.logo span { color: var(--primary); }
+.nav-links { display: flex; gap: 24px; list-style: none; }
+.nav-links a { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-2); text-decoration: none; }
+.nav-links a:hover, .nav-links a.active { color: var(--primary); }
+.nav-av { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; cursor: pointer; }
+
+/* PROFILE HEADER */
+.profile-banner {
+  height: 220px;
+  background-image: url('https://picsum.photos/seed/redwoodbanner/1400/440');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.profile-banner::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 80px;
+  background: linear-gradient(transparent, var(--bg));
+}
+.profile-header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  margin-top: -60px;
+  position: relative;
+  z-index: 1;
+}
+.profile-av-wrap {
+  position: relative;
+}
+.profile-av {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 4px solid var(--bg);
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.online-dot {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2.5px solid var(--bg);
+}
+.profile-bio { flex: 1; padding-bottom: 8px; }
+.profile-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  line-height: 1;
+}
+.profile-handle {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  margin: 4px 0;
+}
+.profile-tagline { font-size: 14px; color: var(--text-2); font-weight: 300; margin-top: 6px; }
+.profile-actions {
+  display: flex;
+  gap: 10px;
+  padding-bottom: 8px;
+}
+.btn-follow {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: background 0.2s;
+}
+.btn-follow:hover { background: var(--primary-dk); }
+.btn-dm {
+  background: none;
+  border: 1.5px solid var(--border);
+  color: var(--text-2);
+  padding: 9px 20px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: all 0.2s;
+}
+.btn-dm:hover { border-color: var(--primary); color: var(--primary); }
+
+/* STATS ROW */
+.profile-stats-row {
+  max-width: 1100px;
+  margin: 20px auto 0;
+  padding: 0 32px;
+  display: flex;
+  gap: 32px;
+}
+.pstat { text-align: center; }
+.pstat-n {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1;
+}
+.pstat-l {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* MAIN LAYOUT */
+.profile-content {
+  max-width: 1100px;
+  margin: 32px auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 28px;
+}
+
+/* HEALTH RINGS CARD */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border-lt);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.card-head {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-lt);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  font-weight: 700;
+}
+.card-date {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+}
+.card-body { padding: 20px; }
+
+/* Today's rings */
+.rings-display {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  text-align: center;
+}
+.ring-box {}
+.ring-svg-wrap {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 10px;
+}
+.ring-svg-wrap svg { transform: rotate(-90deg); }
+.ring-label-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.ring-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1;
+}
+.ring-unit {
+  font-family: 'Space Mono', monospace;
+  font-size: 7px;
+  color: var(--muted);
+  margin-top: 1px;
+}
+.ring-name {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* 7-day chart */
+.chart-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  height: 80px;
+  margin-top: 16px;
+}
+.chart-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.chart-bar {
+  width: 100%;
+  border-radius: 6px 6px 0 0;
+  transition: opacity 0.2s;
+}
+.chart-bar:hover { opacity: 0.7; }
+.chart-day { font-family: 'Space Mono', monospace; font-size: 8px; color: var(--muted); }
+
+/* Weekly trend */
+.trend-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.trend-stat {
+  background: var(--surface-2);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.trend-stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.trend-icon { font-size: 16px; }
+.trend-change {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+.up   { background: var(--green-lt);   color: var(--green); }
+.down { background: var(--red-lt);     color: var(--red); }
+.neutral { background: var(--amber-lt); color: var(--amber); }
+.trend-val { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 500; color: var(--text); line-height: 1; }
+.trend-lbl { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+/* Photo grid */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.grid-photo {
+  aspect-ratio: 1;
+  border-radius: 10px;
+  object-fit: cover;
+  width: 100%;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+.grid-photo:hover { transform: scale(1.02); opacity: 0.9; }
+
+/* Activity timeline */
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.timeline-item {
+  display: flex;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-lt);
+  align-items: flex-start;
+}
+.timeline-item:last-child { border-bottom: none; }
+.timeline-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.timeline-main { flex: 1; }
+.timeline-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.timeline-meta { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); margin-top: 3px; letter-spacing: 0.06em; }
+.timeline-metrics { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+.tl-metric {
+  background: var(--surface-2);
+  border-radius: 99px;
+  padding: 4px 12px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--text-2);
+}
+
+/* SIDEBAR */
+.sidebar-right {}
+.badge-shelf { display: flex; gap: 8px; flex-wrap: wrap; padding: 16px 20px; }
+.badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.badge:hover { transform: scale(1.1); }
+.badge-earned { background: var(--primary-lt); }
+.badge-locked { background: var(--surface-2); opacity: 0.4; filter: grayscale(1); }
+.badge-tooltip { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.1em; padding: 0 20px 16px; }
+
+.streak-display {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+}
+.streak-flame { font-size: 40px; }
+.streak-n { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 500; color: var(--amber); line-height: 1; }
+.streak-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+.streak-dots { display: flex; gap: 4px; padding: 0 20px 16px; }
+.streak-dot { width: 10px; height: 10px; border-radius: 50%; }
+.streak-done { background: var(--amber); }
+.streak-miss { background: var(--border); }
+.streak-today { background: var(--primary); box-shadow: 0 0 0 3px var(--primary-lt); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="landing.html" class="logo">syn<span>z</span>oia</a>
+    <ul class="nav-links">
+      <li><a href="feed.html">Feed</a></li>
+      <li><a href="#">Leaderboard</a></li>
+      <li><a href="profile.html" class="active">Profile</a></li>
+      <li><a href="messages.html">Messages</a></li>
+    </ul>
+    <img src="https://picsum.photos/seed/me/72/72" class="nav-av" alt="You" />
+  </div>
+</nav>
+
+<!-- BANNER -->
+<div class="profile-banner">
+  <!-- Redwood forest banner image -->
+</div>
+
+<!-- PROFILE HEADER -->
+<div class="profile-header-inner">
+  <div class="profile-av-wrap">
+    <img src="https://picsum.photos/seed/av1/192/192" class="profile-av" alt="sierra_walker" />
+    <div class="online-dot"></div>
+  </div>
+  <div class="profile-bio">
+    <div class="profile-name">Sierra Walker</div>
+    <div class="profile-handle">@sierra_walker · Santa Cruz, CA</div>
+    <div class="profile-tagline">Hiking the redwoods one morning at a time. 🌲 Public by default.</div>
+  </div>
+  <div class="profile-actions">
+    <button class="btn-follow">Follow</button>
+    <button class="btn-dm">✉️ Message</button>
+  </div>
+</div>
+
+<!-- STATS ROW -->
+<div class="profile-stats-row">
+  <div class="pstat"><div class="pstat-n">284</div><div class="pstat-l">Followers</div></div>
+  <div class="pstat"><div class="pstat-n">142</div><div class="pstat-l">Following</div></div>
+  <div class="pstat"><div class="pstat-n">3,241</div><div class="pstat-l">Total posts</div></div>
+  <div class="pstat"><div class="pstat-n">54</div><div class="pstat-l">Day streak 🔥</div></div>
+  <div class="pstat"><div class="pstat-n">4,218,440</div><div class="pstat-l">All-time steps</div></div>
+  <div class="pstat"><div class="pstat-n">#7</div><div class="pstat-l">Weekly rank</div></div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="profile-content">
+  <div class="main-col">
+
+    <!-- Today's Health Rings -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Today's Health Rings</span>
+        <span class="card-date">Jun 8, 2026</span>
+      </div>
+      <div class="card-body">
+        <div class="rings-display">
+          <!-- Steps ring -->
+          <div class="ring-box">
+            <div class="ring-svg-wrap">
+              <svg width="80" height="80" viewBox="0 0 80 80">
+                <circle cx="40" cy="40" r="33" fill="none" stroke="var(--primary-lt)" stroke-width="7"/>
+                <circle cx="40" cy="40" r="33" fill="none" stroke="var(--primary)" stroke-width="7"
+                        stroke-dasharray="207.3" stroke-dashoffset="51.8" stroke-linecap="round"/>
+              </svg>
+              <div class="ring-label-inner">
+                <div class="ring-val">11.2k</div>
+                <div class="ring-unit">steps</div>
+              </div>
+            </div>
+            <div class="ring-name">Steps</div>
+          </div>
+          <!-- Sleep ring -->
+          <div class="ring-box">
+            <div class="ring-svg-wrap">
+              <svg width="80" height="80" viewBox="0 0 80 80">
+                <circle cx="40" cy="40" r="33" fill="none" stroke="var(--green-lt)" stroke-width="7"/>
+                <circle cx="40" cy="40" r="33" fill="none" stroke="var(--green)" stroke-width="7"
+                        stroke-dasharray="207.3" stroke-dashoffset="31.1" stroke-linecap="round"/>
+              </svg>
+              <div class="ring-label-inner">
+                <div class="ring-val">8h 12</div>
+                <div class="ring-unit">sleep</div>
+              </div>
+            </div>
+            <div class="ring-name">Sleep</div>
+          </div>
+          <!-- Heart Rate ring -->
+          <div class="ring-box">
+            <div class="ring-svg-wrap">
+              <svg width="80" height="80" viewBox="0 0 80 80">
+                <circle cx="40" cy="40" r="33" fill="none" stroke="var(--red-lt)" stroke-width="7"/>
+                <circle cx="40" cy="40" r="33" fill="none" stroke="var(--red)" stroke-width="7"
+                        stroke-dasharray="207.3" stroke-dashoffset="166" stroke-linecap="round"/>
+              </svg>
+              <div class="ring-label-inner">
+                <div class="ring-val">61</div>
+                <div class="ring-unit">bpm</div>
+              </div>
+            </div>
+            <div class="ring-name">Resting HR</div>
+          </div>
+          <!-- Calories ring -->
+          <div class="ring-box">
+            <div class="ring-svg-wrap">
+              <svg width="80" height="80" viewBox="0 0 80 80">
+                <circle cx="40" cy="40" r="33" fill="none" stroke="var(--amber-lt)" stroke-width="7"/>
+                <circle cx="40" cy="40" r="33" fill="none" stroke="var(--amber)" stroke-width="7"
+                        stroke-dasharray="207.3" stroke-dashoffset="62.2" stroke-linecap="round"/>
+              </svg>
+              <div class="ring-label-inner">
+                <div class="ring-val">1,924</div>
+                <div class="ring-unit">cal</div>
+              </div>
+            </div>
+            <div class="ring-name">Calories</div>
+          </div>
+        </div>
+
+        <!-- 7-day bar chart -->
+        <div style="margin-top:24px">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">7-Day Step History</div>
+          <div class="chart-row">
+            <div class="chart-bar-wrap">
+              <div class="chart-bar" style="height:45px;background:var(--primary);opacity:0.5"></div>
+              <div class="chart-day">M</div>
+            </div>
+            <div class="chart-bar-wrap">
+              <div class="chart-bar" style="height:62px;background:var(--primary);opacity:0.6"></div>
+              <div class="chart-day">T</div>
+            </div>
+            <div class="chart-bar-wrap">
+              <div class="chart-bar" style="height:38px;background:var(--primary);opacity:0.4"></div>
+              <div class="chart-day">W</div>
+            </div>
+            <div class="chart-bar-wrap">
+              <div class="chart-bar" style="height:72px;background:var(--primary);opacity:0.7"></div>
+              <div class="chart-day">T</div>
+            </div>
+            <div class="chart-bar-wrap">
+              <div class="chart-bar" style="height:55px;background:var(--primary);opacity:0.55"></div>
+              <div class="chart-day">F</div>
+            </div>
+            <div class="chart-bar-wrap">
+              <div class="chart-bar" style="height:80px;background:var(--green)"></div>
+              <div class="chart-day">Sa</div>
+            </div>
+            <div class="chart-bar-wrap">
+              <div class="chart-bar" style="height:67px;background:var(--primary);border: 2px solid var(--primary)"></div>
+              <div class="chart-day" style="color:var(--primary);font-weight:700">Su</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly Trends -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Weekly Trends</span>
+        <span class="card-date">vs. last week</span>
+      </div>
+      <div class="card-body">
+        <div class="trend-grid">
+          <div class="trend-stat">
+            <div class="trend-stat-top">
+              <span class="trend-icon">🚶</span>
+              <span class="trend-change up">↑ 12%</span>
+            </div>
+            <div class="trend-val">9,841</div>
+            <div class="trend-lbl">Avg daily steps</div>
+          </div>
+          <div class="trend-stat">
+            <div class="trend-stat-top">
+              <span class="trend-icon">🌙</span>
+              <span class="trend-change up">↑ 0.4h</span>
+            </div>
+            <div class="trend-val">7h 58m</div>
+            <div class="trend-lbl">Avg sleep</div>
+          </div>
+          <div class="trend-stat">
+            <div class="trend-stat-top">
+              <span class="trend-icon">❤️</span>
+              <span class="trend-change up">↓ 3 bpm</span>
+            </div>
+            <div class="trend-val">61 bpm</div>
+            <div class="trend-lbl">Resting HR</div>
+          </div>
+          <div class="trend-stat">
+            <div class="trend-stat-top">
+              <span class="trend-icon">🔥</span>
+              <span class="trend-change neutral">→ same</span>
+            </div>
+            <div class="trend-val">1,890</div>
+            <div class="trend-lbl">Avg calories</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity Timeline -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Recent Activity</span>
+        <span class="card-date">Last 7 days</span>
+      </div>
+      <div class="card-body" style="padding:8px 20px">
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-icon" style="background:var(--primary-lt)">🌲</div>
+            <div class="timeline-main">
+              <div class="timeline-title">Henry Cowell Morning Hike</div>
+              <div class="timeline-meta">Today · 6:04am · 4.2 miles · 1h 14m</div>
+              <div class="timeline-metrics">
+                <span class="tl-metric" style="background:var(--primary-lt);color:var(--primary)">11,204 steps</span>
+                <span class="tl-metric" style="background:var(--red-lt);color:var(--red)">Peak 142 bpm</span>
+                <span class="tl-metric">640 cal burned</span>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-icon" style="background:var(--amber-lt)">🥑</div>
+            <div class="timeline-main">
+              <div class="timeline-title">Breakfast — avocado toast + eggs</div>
+              <div class="timeline-meta">Today · 8:20am · 640 cal</div>
+              <div class="timeline-metrics">
+                <span class="tl-metric" style="background:var(--green-lt);color:var(--green)">42g protein</span>
+                <span class="tl-metric">Local sourdough</span>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-icon" style="background:var(--green-lt)">😴</div>
+            <div class="timeline-main">
+              <div class="timeline-title">Last night's sleep</div>
+              <div class="timeline-meta">Yesterday · 9:42pm → 6:16am</div>
+              <div class="timeline-metrics">
+                <span class="tl-metric" style="background:var(--green-lt);color:var(--green)">8h 34m total</span>
+                <span class="tl-metric" style="background:var(--primary-lt);color:var(--primary)">Score: 94</span>
+                <span class="tl-metric">HRV: 88ms</span>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-icon" style="background:var(--primary-lt)">🏃</div>
+            <div class="timeline-main">
+              <div class="timeline-title">West Cliff Drive Run</div>
+              <div class="timeline-meta">Yesterday · 5:45pm · 3.1 miles</div>
+              <div class="timeline-metrics">
+                <span class="tl-metric" style="background:var(--primary-lt);color:var(--primary)">6,420 steps</span>
+                <span class="tl-metric" style="background:var(--red-lt);color:var(--red)">Peak 158 bpm</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Photo Grid -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Meal & Moment Photos</span>
+        <span class="card-date">28 photos this month</span>
+      </div>
+      <div class="card-body">
+        <div class="photo-grid">
+          <img src="https://picsum.photos/seed/trail1/300/300" class="grid-photo" alt="trail" />
+          <img src="https://picsum.photos/seed/food1/300/300" class="grid-photo" alt="food" />
+          <img src="https://picsum.photos/seed/forest44/300/300" class="grid-photo" alt="forest" />
+          <img src="https://picsum.photos/seed/food2/300/300" class="grid-photo" alt="food" />
+          <img src="https://picsum.photos/seed/coast99/300/300" class="grid-photo" alt="coast" />
+          <img src="https://picsum.photos/seed/food3/300/300" class="grid-photo" alt="food" />
+          <img src="https://picsum.photos/seed/hike22/300/300" class="grid-photo" alt="hike" />
+          <img src="https://picsum.photos/seed/food10/300/300" class="grid-photo" alt="food" />
+          <img src="https://picsum.photos/seed/meal1/300/300" class="grid-photo" alt="meal" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar-right">
+
+    <!-- Streak -->
+    <div class="card">
+      <div class="card-head"><span class="card-title">Activity Streak</span></div>
+      <div class="streak-display">
+        <div class="streak-flame">🔥</div>
+        <div>
+          <div class="streak-n">54</div>
+          <div class="streak-label">Day streak</div>
+        </div>
+      </div>
+      <div class="streak-dots">
+        <div class="streak-dot streak-done"></div>
+        <div class="streak-dot streak-done"></div>
+        <div class="streak-dot streak-done"></div>
+        <div class="streak-dot streak-done"></div>
+        <div class="streak-dot streak-done"></div>
+        <div class="streak-dot streak-done"></div>
+        <div class="streak-dot streak-today"></div>
+      </div>
+      <div style="padding:0 20px 16px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.08em;color:var(--muted);">
+        Mo Tu We Th Fr Sa Su — this week
+      </div>
+    </div>
+
+    <!-- Badges -->
+    <div class="card">
+      <div class="card-head"><span class="card-title">Badges Earned</span></div>
+      <div class="badge-shelf">
+        <div class="badge badge-earned" title="10k Steps Club">🚶</div>
+        <div class="badge badge-earned" title="30-Day Streak">🔥</div>
+        <div class="badge badge-earned" title="Early Bird">🌅</div>
+        <div class="badge badge-earned" title="Sleep Master">😴</div>
+        <div class="badge badge-earned" title="Redwood Hiker">🌲</div>
+        <div class="badge badge-earned" title="Community Star">⭐</div>
+        <div class="badge badge-locked" title="100-Day Streak (locked)">💎</div>
+        <div class="badge badge-locked" title="Marathon Walker (locked)">🏅</div>
+      </div>
+      <div class="badge-tooltip">6 of 20 badges · 2 unlockable soon</div>
+    </div>
+
+    <!-- Connections -->
+    <div class="card">
+      <div class="card-head"><span class="card-title">Following · Active today</span></div>
+      <div style="padding:12px 16px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <img src="https://picsum.photos/seed/av5/72/72" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" alt="" />
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:600;color:var(--text)">redwood_rob</div>
+            <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted)">9,880 steps · 2h ago</div>
+          </div>
+          <div style="width:8px;height:8px;border-radius:50%;background:#22c55e;flex-shrink:0"></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <img src="https://picsum.photos/seed/av7/72/72" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" alt="" />
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:600;color:var(--text)">marina_steps</div>
+            <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted)">Sleep 7h 50m · today</div>
+          </div>
+          <div style="width:8px;height:8px;border-radius:50%;background:#22c55e;flex-shrink:0"></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <img src="https://picsum.photos/seed/av8/72/72" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" alt="" />
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:600;color:var(--text)">pacific_palo</div>
+            <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--muted)">Meal logged · 45m ago</div>
+          </div>
+          <div style="width:8px;height:8px;border-radius:50%;background:#fbbf24;flex-shrink:0"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

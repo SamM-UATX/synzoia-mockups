@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>synzoia — Messages Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Space+Mono:ital,wght@0,400;0,700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg:        #f8f1e7;
+  --surface:   #fdfaf6;
+  --surface-2: #f3ece1;
+  --primary:   #1a9b8f;
+  --primary-lt:#d6f4f1;
+  --primary-dk:#157a70;
+  --green:     #2d6a4f;
+  --green-lt:  #daeee5;
+  --amber:     #c68642;
+  --amber-lt:  #f5e8d3;
+  --red:       #d4524a;
+  --text:      #1a2620;
+  --text-2:    #4a5e56;
+  --muted:     #7a8f84;
+  --border:    #d4c9b6;
+  --border-lt: #e8e0d2;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+/* NAV */
+nav {
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-lt);
+  flex-shrink: 0;
+}
+.nav-inner {
+  max-width: 1280px; margin: 0 auto; padding: 0 24px;
+  height: 60px; display: flex; align-items: center; justify-content: space-between;
+}
+.logo { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 22px; font-weight: 500; color: var(--text); text-decoration: none; }
+.logo span { color: var(--primary); }
+.nav-links { display: flex; gap: 20px; list-style: none; }
+.nav-links a { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-2); text-decoration: none; }
+.nav-links a:hover { color: var(--primary); }
+.nav-links a.active { color: var(--primary); }
+.nav-av { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
+
+/* 3-PANE LAYOUT */
+.messages-shell {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 280px 1fr 300px;
+  overflow: hidden;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ── PANE 1: Conversation List ── */
+.conv-list {
+  background: var(--surface);
+  border-right: 1px solid var(--border-lt);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.conv-header {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--border-lt);
+}
+.conv-header-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+}
+.conv-search {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 7px 14px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.conv-search input { border: none; background: none; outline: none; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; color: var(--text); width: 100%; }
+.conv-search input::placeholder { color: var(--muted); }
+.conv-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border-lt);
+}
+.conv-tab {
+  flex: 1;
+  padding: 8px 0;
+  text-align: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+.conv-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+.conv-items { flex: 1; overflow-y: auto; scrollbar-width: none; }
+.conv-items::-webkit-scrollbar { display: none; }
+.conv-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: background 0.1s;
+  border-left: 3px solid transparent;
+  position: relative;
+}
+.conv-item:hover { background: var(--surface-2); }
+.conv-item.active {
+  background: var(--primary-lt);
+  border-left-color: var(--primary);
+}
+.conv-av-wrap { position: relative; flex-shrink: 0; }
+.conv-av { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+.conv-online {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2px solid var(--surface);
+}
+.conv-content { flex: 1; min-width: 0; }
+.conv-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.conv-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.conv-time { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); }
+.conv-preview {
+  font-size: 12px;
+  color: var(--text-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+  font-weight: 300;
+}
+.conv-preview.unread { font-weight: 500; color: var(--text); }
+.conv-badge {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── PANE 2: Active Conversation ── */
+.conv-active {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  overflow: hidden;
+}
+.chat-topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-lt);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+.chat-av { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.chat-user-info { flex: 1; }
+.chat-name { font-size: 15px; font-weight: 600; color: var(--text); }
+.chat-status { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--green); }
+.chat-actions { display: flex; gap: 8px; }
+.chat-action {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.chat-action:hover { background: var(--primary-lt); }
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scrollbar-width: none;
+}
+.chat-messages::-webkit-scrollbar { display: none; }
+
+/* date label */
+.chat-date-label {
+  text-align: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 4px 0;
+}
+
+/* message group */
+.msg-group {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  max-width: 75%;
+}
+.msg-group.from-me {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+.msg-av { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.msg-bubbles { display: flex; flex-direction: column; gap: 4px; }
+.msg-bubble {
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-size: 13px;
+  line-height: 1.5;
+  max-width: 340px;
+}
+.bubble-them {
+  background: var(--surface);
+  border: 1px solid var(--border-lt);
+  color: var(--text);
+  border-bottom-left-radius: 4px;
+}
+.msg-group .msg-bubbles .msg-bubble:not(:last-child).bubble-them { border-bottom-left-radius: 4px; }
+.bubble-me {
+  background: var(--primary);
+  color: white;
+  border-bottom-right-radius: 4px;
+  align-self: flex-end;
+}
+.msg-time { font-family: 'Space Mono', monospace; font-size: 8px; color: var(--muted); margin-top: 2px; text-align: right; }
+.from-me .msg-time { text-align: right; }
+
+/* Health card shared in DM */
+.dm-health-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border-lt);
+  border-radius: 14px;
+  padding: 14px 16px;
+  max-width: 260px;
+}
+.dm-health-card-head {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.dm-health-metrics { display: flex; gap: 10px; }
+.dm-metric { text-align: center; }
+.dm-metric-n { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 500; line-height: 1; }
+.dm-metric-l { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+
+/* Shared food photo in DM */
+.dm-photo-bubble {
+  border-radius: 14px;
+  overflow: hidden;
+  max-width: 220px;
+  border: 1px solid var(--border-lt);
+}
+.dm-photo-bubble img { width: 100%; height: 160px; object-fit: cover; display: block; }
+.dm-photo-caption { background: var(--surface); padding: 8px 12px; font-size: 12px; color: var(--text-2); font-weight: 300; }
+
+/* chat input */
+.chat-input-area {
+  padding: 12px 16px;
+  background: var(--surface);
+  border-top: 1px solid var(--border-lt);
+  flex-shrink: 0;
+}
+.chat-input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 8px 12px 8px 16px;
+  transition: border-color 0.2s;
+}
+.chat-input-row:focus-within { border-color: var(--primary); }
+.chat-input {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+}
+.chat-input::placeholder { color: var(--muted); }
+.chat-attach { font-size: 18px; cursor: pointer; opacity: 0.5; transition: opacity 0.15s; }
+.chat-attach:hover { opacity: 1; }
+.chat-send {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.chat-send:hover { background: var(--primary-dk); }
+
+/* Suggested reply chips */
+.suggested-replies {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.reply-chip {
+  padding: 5px 14px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 12px;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.reply-chip:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-lt); }
+
+/* ── PANE 3: User Details ── */
+.user-details {
+  background: var(--surface);
+  border-left: 1px solid var(--border-lt);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.user-details::-webkit-scrollbar { display: none; }
+.ud-header {
+  padding: 20px 20px 16px;
+  text-align: center;
+  border-bottom: 1px solid var(--border-lt);
+}
+.ud-av { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; margin: 0 auto 12px; border: 3px solid var(--border-lt); }
+.ud-name { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 500; color: var(--text); }
+.ud-handle { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 4px; }
+.ud-bio { font-size: 13px; color: var(--text-2); font-weight: 300; margin-top: 8px; line-height: 1.6; }
+.ud-actions { display: flex; gap: 8px; justify-content: center; margin-top: 14px; }
+.ud-action {
+  padding: 6px 16px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: none;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: all 0.15s;
+}
+.ud-action.primary { background: var(--primary); color: white; border-color: var(--primary); }
+.ud-action:not(.primary):hover { border-color: var(--primary); color: var(--primary); }
+
+.ud-section {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-lt);
+}
+.ud-section-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.ud-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ud-metric {
+  background: var(--surface-2);
+  border-radius: 10px;
+  padding: 10px 12px;
+  text-align: center;
+}
+.ud-metric-n { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 500; color: var(--text); line-height: 1; }
+.ud-metric-l { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+.ud-photos { display: flex; gap: 6px; }
+.ud-photo { width: calc(33% - 4px); aspect-ratio: 1; border-radius: 8px; object-fit: cover; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="landing.html" class="logo">syn<span>z</span>oia</a>
+    <ul class="nav-links">
+      <li><a href="feed.html">Feed</a></li>
+      <li><a href="#">Leaderboard</a></li>
+      <li><a href="profile.html">Profile</a></li>
+      <li><a href="messages.html" class="active">Messages</a></li>
+    </ul>
+    <img src="https://picsum.photos/seed/me/72/72" class="nav-av" alt="you" />
+  </div>
+</nav>
+
+<div class="messages-shell">
+
+  <!-- PANE 1: Conversation List -->
+  <div class="conv-list">
+    <div class="conv-header">
+      <div class="conv-header-title">Messages</div>
+      <div class="conv-search">
+        <span style="font-size:13px;color:var(--muted)">🔍</span>
+        <input type="text" placeholder="Search conversations…" />
+      </div>
+    </div>
+    <div class="conv-tabs">
+      <div class="conv-tab active">All</div>
+      <div class="conv-tab">Unread</div>
+      <div class="conv-tab">Groups</div>
+    </div>
+    <div class="conv-items">
+      <!-- Active conversation -->
+      <div class="conv-item active">
+        <div class="conv-av-wrap">
+          <img src="https://picsum.photos/seed/av1/88/88" class="conv-av" alt="sierra" />
+          <div class="conv-online"></div>
+        </div>
+        <div class="conv-content">
+          <div class="conv-name-row">
+            <span class="conv-name">sierra_walker</span>
+            <span class="conv-time">9:22am</span>
+          </div>
+          <div class="conv-preview unread">My HRV was through the roof 📈</div>
+        </div>
+        <div class="conv-badge">2</div>
+      </div>
+      <!-- Others -->
+      <div class="conv-item">
+        <div class="conv-av-wrap">
+          <img src="https://picsum.photos/seed/av5/88/88" class="conv-av" alt="rob" />
+        </div>
+        <div class="conv-content">
+          <div class="conv-name-row">
+            <span class="conv-name">redwood_rob</span>
+            <span class="conv-time">8:45am</span>
+          </div>
+          <div class="conv-preview">Shared their sleep data</div>
+        </div>
+      </div>
+      <div class="conv-item">
+        <div class="conv-av-wrap">
+          <img src="https://picsum.photos/seed/av7/88/88" class="conv-av" alt="marina" />
+          <div class="conv-online"></div>
+        </div>
+        <div class="conv-content">
+          <div class="conv-name-row">
+            <span class="conv-name">marina_steps</span>
+            <span class="conv-time">8:12am</span>
+          </div>
+          <div class="conv-preview unread">Congrats on 10k streak! 🔥</div>
+        </div>
+        <div class="conv-badge">1</div>
+      </div>
+      <div class="conv-item">
+        <div class="conv-av-wrap">
+          <img src="https://picsum.photos/seed/av8/88/88" class="conv-av" alt="palo" />
+        </div>
+        <div class="conv-content">
+          <div class="conv-name-row">
+            <span class="conv-name">pacific_palo</span>
+            <span class="conv-time">Yesterday</span>
+          </div>
+          <div class="conv-preview">What's that recipe you posted?</div>
+        </div>
+      </div>
+      <div class="conv-item">
+        <div class="conv-av-wrap">
+          <img src="https://picsum.photos/seed/sug2/88/88" class="conv-av" alt="dawn" />
+        </div>
+        <div class="conv-content">
+          <div class="conv-name-row">
+            <span class="conv-name">pacific_dawn</span>
+            <span class="conv-time">Monday</span>
+          </div>
+          <div class="conv-preview">Your sleep score is unreal</div>
+        </div>
+      </div>
+      <div class="conv-item">
+        <div class="conv-av-wrap">
+          <img src="https://picsum.photos/seed/sug1/88/88" class="conv-av" alt="cowell" />
+        </div>
+        <div class="conv-content">
+          <div class="conv-name-row">
+            <span class="conv-name">cowell_park</span>
+            <span class="conv-time">Sunday</span>
+          </div>
+          <div class="conv-preview">Same trail next weekend?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANE 2: Chat -->
+  <div class="conv-active">
+    <div class="chat-topbar">
+      <img src="https://picsum.photos/seed/av1/80/80" class="chat-av" alt="sierra" />
+      <div class="chat-user-info">
+        <div class="chat-name">sierra_walker</div>
+        <div class="chat-status">● Active now · 11,204 steps today</div>
+      </div>
+      <div class="chat-actions">
+        <div class="chat-action" title="View profile">👤</div>
+        <div class="chat-action" title="Share health data">📊</div>
+        <div class="chat-action" title="More">···</div>
+      </div>
+    </div>
+
+    <div class="chat-messages">
+      <div class="chat-date-label">Today, June 8</div>
+
+      <!-- Them: trail photo -->
+      <div class="msg-group">
+        <img src="https://picsum.photos/seed/av1/56/56" class="msg-av" alt="" />
+        <div class="msg-bubbles">
+          <div class="msg-bubble bubble-them">Morning! Just got back from Henry Cowell. That trail was worth it 🌲</div>
+          <div class="dm-photo-bubble">
+            <img src="https://picsum.photos/seed/trail1/440/320" alt="trail" />
+            <div class="dm-photo-caption">Redwood Loop · 6:14am</div>
+          </div>
+          <div class="msg-time">9:04am</div>
+        </div>
+      </div>
+
+      <!-- Me -->
+      <div class="msg-group from-me">
+        <img src="https://picsum.photos/seed/me/56/56" class="msg-av" alt="" />
+        <div class="msg-bubbles">
+          <div class="msg-bubble bubble-me">That light! What time did you start? 😍</div>
+          <div class="msg-time" style="color:var(--muted)">9:10am</div>
+        </div>
+      </div>
+
+      <!-- Them: health card shared -->
+      <div class="msg-group">
+        <img src="https://picsum.photos/seed/av1/56/56" class="msg-av" alt="" />
+        <div class="msg-bubbles">
+          <div class="msg-bubble bubble-them">Left at 5:50am. Check these numbers from the hike 👇</div>
+          <div class="dm-health-card">
+            <div class="dm-health-card-head">📊 Shared health data · today's hike</div>
+            <div class="dm-health-metrics">
+              <div class="dm-metric">
+                <div class="dm-metric-n" style="color:var(--primary)">11,204</div>
+                <div class="dm-metric-l">Steps</div>
+              </div>
+              <div class="dm-metric">
+                <div class="dm-metric-n" style="color:var(--red)">61 bpm</div>
+                <div class="dm-metric-l">Resting HR</div>
+              </div>
+              <div class="dm-metric">
+                <div class="dm-metric-n" style="color:var(--green)">8h 12m</div>
+                <div class="dm-metric-l">Sleep</div>
+              </div>
+            </div>
+          </div>
+          <div class="msg-time">9:14am</div>
+        </div>
+      </div>
+
+      <!-- Me -->
+      <div class="msg-group from-me">
+        <img src="https://picsum.photos/seed/me/56/56" class="msg-av" alt="" />
+        <div class="msg-bubbles">
+          <div class="msg-bubble bubble-me">Same! My HRV was through the roof after that hike 📈</div>
+          <div class="msg-bubble bubble-me">Resting HR of 61 is incredible for a Tuesday morning honestly</div>
+          <div class="msg-time" style="color:var(--muted)">9:22am · Read</div>
+        </div>
+      </div>
+
+      <!-- Them -->
+      <div class="msg-group">
+        <img src="https://picsum.photos/seed/av1/56/56" class="msg-av" alt="" />
+        <div class="msg-bubbles">
+          <div class="msg-bubble bubble-them">No phone after 9pm has been the biggest unlock for me. HR dropped 8 points in 6 weeks just from that</div>
+          <div class="msg-time">9:28am</div>
+        </div>
+      </div>
+
+      <!-- Them: breakfast photo -->
+      <div class="msg-group">
+        <img src="https://picsum.photos/seed/av1/56/56" class="msg-av" alt="" />
+        <div class="msg-bubbles">
+          <div class="msg-bubble bubble-them">Post-hike refuel 🥑</div>
+          <div class="dm-photo-bubble">
+            <img src="https://picsum.photos/seed/food1/440/320" alt="breakfast" />
+            <div class="dm-photo-caption">640 cal · 42g protein · Companion Bakeshop</div>
+          </div>
+          <div class="msg-time">9:31am</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-input-area">
+      <div class="suggested-replies">
+        <button class="reply-chip">That looks amazing 🤤</button>
+        <button class="reply-chip">What's the recipe?</button>
+        <button class="reply-chip">Same trail this weekend?</button>
+      </div>
+      <div class="chat-input-row">
+        <span class="chat-attach">📷</span>
+        <span class="chat-attach">📊</span>
+        <input class="chat-input" placeholder="Message sierra_walker…" />
+        <button class="chat-send">↑</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANE 3: User Details -->
+  <div class="user-details">
+    <div class="ud-header">
+      <img src="https://picsum.photos/seed/av1/144/144" class="ud-av" alt="sierra" />
+      <div class="ud-name">Sierra Walker</div>
+      <div class="ud-handle">@sierra_walker · Santa Cruz, CA</div>
+      <div class="ud-bio">Hiking the redwoods one morning at a time. Sleep nerd. Apple Watch obsessive. 🌲</div>
+      <div class="ud-actions">
+        <button class="ud-action primary">Following ✓</button>
+        <button class="ud-action">View Profile</button>
+      </div>
+    </div>
+
+    <div class="ud-section">
+      <div class="ud-section-title">Today's Health Data</div>
+      <div class="ud-metrics">
+        <div class="ud-metric">
+          <div class="ud-metric-n" style="color:var(--primary)">11,204</div>
+          <div class="ud-metric-l">Steps</div>
+        </div>
+        <div class="ud-metric">
+          <div class="ud-metric-n" style="color:var(--green)">8h 12m</div>
+          <div class="ud-metric-l">Sleep</div>
+        </div>
+        <div class="ud-metric">
+          <div class="ud-metric-n" style="color:var(--red)">61 bpm</div>
+          <div class="ud-metric-l">Resting HR</div>
+        </div>
+        <div class="ud-metric">
+          <div class="ud-metric-n" style="color:var(--amber)">1,924</div>
+          <div class="ud-metric-l">Calories</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ud-section">
+      <div class="ud-section-title">Shared Photos</div>
+      <div class="ud-photos">
+        <img src="https://picsum.photos/seed/trail1/160/160" class="ud-photo" alt="" />
+        <img src="https://picsum.photos/seed/food1/160/160" class="ud-photo" alt="" />
+        <img src="https://picsum.photos/seed/forest44/160/160" class="ud-photo" alt="" />
+      </div>
+    </div>
+
+    <div class="ud-section">
+      <div class="ud-section-title">Stats</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;justify-content:space-between;font-size:13px;">
+          <span style="color:var(--text-2);font-weight:300">Avg daily steps</span>
+          <span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--text);font-weight:700">9,841</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;">
+          <span style="color:var(--text-2);font-weight:300">Avg sleep</span>
+          <span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--text);font-weight:700">7h 58m</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;">
+          <span style="color:var(--text-2);font-weight:300">Current streak</span>
+          <span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--amber);font-weight:700">54 days 🔥</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;">
+          <span style="color:var(--text-2);font-weight:300">Leaderboard rank</span>
+          <span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--primary);font-weight:700">#1 today</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
